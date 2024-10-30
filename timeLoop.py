@@ -1,7 +1,11 @@
 import time
 
 
-def run_for_some_time(cookie):
-    for i in range(200):
+
+def run_for_five_sec(cookie):
+    timeout= time.time() + 5
+    while True:
+        if time.time()> timeout:
+            break
         cookie.click()
-        time.sleep(0.0001)
+        # time.sleep(0.0001)
