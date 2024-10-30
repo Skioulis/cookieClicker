@@ -87,6 +87,7 @@ def buy_from_shop():
     while True:
         prices = get_prices(driver)
         print(prices['grandma'])
+        # the ifs are working
         if prices["money"] > prices["time_machine"]:
             print(f"buying timemachine @ {prices["time_machine"]}")
             shop["time_machine"].click()
