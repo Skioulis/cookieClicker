@@ -56,41 +56,78 @@ def get_prices(inner_driver : webdriver):
     print("prices done")
 
     return {
-        "money" : money,
-        "cursor_price" : cursor_price,
-        "grandma_price" : grandma_price,
-        "factory_price" : factory_price,
-        "mine_price" : mine_price,
-        "shipment_price" : shipment_price,
-        "alchemy_lab_price" : alchemy_lab_price,
-        "portal_price" : portal_price,
-        "time_machine_price" : time_machine_price
+        "money" : string_to_int(money),
+        "cursor" : string_to_int(cursor_price),
+        "grandma" : string_to_int(grandma_price),
+        "factory" : string_to_int(factory_price),
+        "mine" : string_to_int(mine_price),
+        "shipment" : string_to_int(shipment_price),
+        "alchemy_lab" : string_to_int(alchemy_lab_price),
+        "portal" : string_to_int(portal_price),
+        "time_machine" : string_to_int(time_machine_price)
     }
+
+def string_to_int (string : str):
+
+    if ',' in string:
+
+        string = string.replace(',','')
+
+    return int(string)
 
 driver = initialization()
 
 shop = cookie_shop(driver)
-prices = get_prices(driver)
-
-
-# def cookie_loop(element):
-#     tL.run_for_five_sec(element['cookie'])
 
 
 
 
+def buy_from_shop():
 
-        # return {
-        #     "money" : money.text ,
-        #     "cursor_price_int":cursor_price_int}
+    while True:
+        prices = get_prices(driver)
+        print(prices['grandma'])
+        if prices["money"] > prices["time_machine"]:
+            print(f"buying timemachine @ {prices["time_machine"]}")
+            shop["time_machine"].click()
 
-    # prices = check_price()
-    # print(prices["money"])
-    # while int(prices['money'].text) > prices['cursor_price_int']:
-    #     element['cursor'].click()
+        elif prices["money"] > prices["portal"]:
+            print(f"buying portal @ {prices["portal"]}")
+            shop["portal"].click()
+
+        elif prices["money"] > prices["alchemy_lab"]:
+            print(f"buying alchemy_lab @ {prices["alchemy_lab"]}")
+            shop["alchemy_lab"].click()
+
+        elif prices["money"] > prices["shipment"]:
+            print(f"buying shipment @ {prices["shipment"]}")
+            shop["shipment"].click()
+
+        elif prices["money"] > prices["mine"]:
+            print(f"buying mine @ {prices["mine"]}")
+            shop["mine"].click()
+
+        elif prices["money"] > prices["factory"]:
+            print(f"buying factory @ {prices["factory"]}")
+            shop["factory"].click()
+
+        elif prices["money"] > prices["grandma"]:
+            print(f"buying grandma @ {prices["grandma"]}")
+            shop["grandma"].click()
+
+        elif prices["money"] > prices["cursor"]:
+            print(f"buying cursor @ {prices["cursor"]}")
+            shop["cursor"].click()
+        else:
+            break
+
+    print("done buying")
+
+tL.run_for_five_sec(shop["cookie"])
+
+buy_from_shop()
 
 
-shop = cookie_shop(driver)
 
 
 
@@ -98,6 +135,5 @@ shop = cookie_shop(driver)
 
 
 
-# cookie_loop(elements)
 
-# print(int(cursor_price.text.replace('Cursor - ', '')))
+# driver.quit()
