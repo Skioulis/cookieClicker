@@ -5,20 +5,24 @@ import timeLoop
 import timeLoop as tL
 import time
 
-
+def can_buy (item):
+    if item.get_attribute("class") == "":
+        print("can buy")
+        return True
+    print("can't buy")
+    return False
 
 def initialization ():
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_experimental_option("detach", True)
     chrome_options.add_argument("--start-maximized")
 
-    driver = webdriver.Chrome(options=chrome_options)
-    driver.get("https://orteil.dashnet.org/experiments/cookie/")
-    return driver
+    inner_driver = webdriver.Chrome(options=chrome_options)
+    inner_driver.get("https://orteil.dashnet.org/experiments/cookie/")
+    return inner_driver
 
 def cookie_shop(inner_driver : webdriver):
 
-    cookie = inner_driver.find_element(By.XPATH, value='//*[@id="cookie"]')
     cursor = inner_driver.find_element(By.XPATH, value='//*[@id="buyCursor"]')
     grandma = inner_driver.find_element(By.XPATH, value='//*[@id="buyGrandma"]')
     factory = inner_driver.find_element(By.XPATH, value='//*[@id="buyFactory"]')
@@ -31,15 +35,14 @@ def cookie_shop(inner_driver : webdriver):
     print("shop done") # delete
 
     return {
-        "cookie": cookie,
+        "time_machine": time_machine,
+        "portal": portal,
+        "alchemy_lab": alchemy_lab,
+        "shipment": shipment,
+        "mine": mine,
+        "factory": factory,
+        "grandma": grandma,
         "cursor":cursor,
-        "grandma":grandma,
-        "factory":factory,
-        "mine":mine,
-        "shipment":shipment,
-        "alchemy_lab":alchemy_lab,
-        "portal":portal,
-        "time_machine":time_machine,
     }
 
 def get_prices(inner_driver : webdriver):
@@ -77,14 +80,15 @@ def string_to_int (string : str):
 
 driver = initialization()
 
-shop = cookie_shop(driver)
+cookie = driver.find_element(By.XPATH, value='//*[@id="cookie"]')
 
 
 
 
 def buy_from_shop():
-
+    # found the grayed class will try with this
     while True:
+        shop = cookie_shop(driver)
         prices = get_prices(driver)
         print(prices['grandma'])
         # the ifs are working
@@ -124,9 +128,30 @@ def buy_from_shop():
 
     print("done buying")
 
-tL.run_for_five_sec(shop["cookie"])
+tL.run_for_five_sec(cookie)
 
-buy_from_shop()
+# shop = cookie_shop(driver)
+money = string_to_int(driver.find_element(By.ID, value="money").text)
+grandma = driver.find_element(By.XPATH, value='//*[@id="buyGrandma"]')
+# grandma.get_attribute()
+has_money = True
+shop = cookie_shop(driver)
+
+items = driver.find_elements(by=By.CSS_SELECTOR, value="#store div")
+item_ids = [item.get_attribute("id") for item in items]
+print(item_ids)
+
+
+# while has_money:
+#
+#
+#
+#     for key, value in shop.items():
+#         if can_buy(value):
+#             value.click()
+#
+#         else:
+#             has_money = False
 
 
 
