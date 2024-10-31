@@ -1,10 +1,7 @@
 import time
-from asyncio import timeout
-
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-import timeLoop as tL
+
 
 
 def can_buy (item):
@@ -22,13 +19,13 @@ def initialization ():
     inner_driver = webdriver.Chrome(options=chrome_options)
     inner_driver.get("https://orteil.dashnet.org/experiments/cookie/")
     return inner_driver
-def string_to_int (string : str):
-
-    if ',' in string:
-
-        string = string.replace(',','')
-
-    return int(string)
+# def string_to_int (string : str):
+#
+#     if ',' in string:
+#
+#         string = string.replace(',','')
+#
+#     return int(string)
 
 # def cookie_shop(inner_driver : webdriver):
 #     # it crashes so i will find another way
@@ -126,20 +123,7 @@ def string_to_int (string : str):
 
 driver = initialization()
 
-cookie = driver.find_element(By.XPATH, value='//*[@id="cookie"]')
-
-
-
-
-
-# --- to 8elw
-
-
-
-items2 = driver.find_elements(by=By.CSS_SELECTOR, value="#store div")
-item_ids = [item.get_attribute("id") for item in items2]
-
-
+cookie = driver.find_element(By.ID, value="cookie")
 
 
 five_min = time.time() + 60*5
@@ -150,11 +134,11 @@ while True:
     cookie.click()
     if time.time() > time_to_buy:
         items = driver.find_elements(by=By.CSS_SELECTOR, value="#store div")
-        print("1")
+
         for item in reversed(items):
-            print("2")
+
             if item.get_attribute("class") != "grayed":
-                print("3")
+
                 item.click()
                 time_to_buy = time.time() + 5
                 break
@@ -164,26 +148,4 @@ while True:
         print(cookie_per_s)
         break
 
-# while run < 3:
-#
-#     tL.run_for_five_sec(cookie)
-#     for item in reversed(items):
-#         if item.get_attribute("class") != "grayed":
-#             print(f"bought {print(item.text.split('\n')[0].split(' - ')[0])}")
-#             driver.find_element(By.ID, value=f"{item.get_attribute('id')}").click()
-#             # item.click()
-#             break
-#     run +=1
-#     print (run)
-#
-#     items = driver.find_elements(by=By.CSS_SELECTOR, value="#store div")
-
-
-
-
-
-
-
-
-
-# driver.quit()
+driver.quit()
